@@ -18,3 +18,5 @@ dotnet new classlib --name NameOfLibrary
 ## scaffold a local db context
 dotnet ef dbcontext scaffold "Server=(localdb)\mssqllocaldb;Database=CoreBlogging;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models
 
+## add a reference to another dotnet project
+ dotnet add .\EfPerformance.csproj reference  ..\CoreBlog\CoreBlog.csproj

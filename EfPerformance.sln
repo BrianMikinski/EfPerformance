@@ -1,19 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfPerformance", "EfPerformance\EfPerformance.csproj", "{C1E27EC1-4938-4AA1-A357-77D57F3EF251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfPerformance", "EfPerformance\EfPerformance.csproj", "{C1E27EC1-4938-4AA1-A357-77D57F3EF251}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBlog", "CoreBlog\CoreBlog.csproj", "{DB0F47AF-FEF4-4DB2-A2CA-4C3FA609C5C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBlog", "CoreBlog\CoreBlog.csproj", "{DB0F47AF-FEF4-4DB2-A2CA-4C3FA609C5C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog", "Blog\Blog.csproj", "{BD709324-AABF-4FFC-8466-5E9A21940A00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C1E27EC1-4938-4AA1-A357-77D57F3EF251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +23,15 @@ Global
 		{DB0F47AF-FEF4-4DB2-A2CA-4C3FA609C5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB0F47AF-FEF4-4DB2-A2CA-4C3FA609C5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB0F47AF-FEF4-4DB2-A2CA-4C3FA609C5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD709324-AABF-4FFC-8466-5E9A21940A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD709324-AABF-4FFC-8466-5E9A21940A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD709324-AABF-4FFC-8466-5E9A21940A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD709324-AABF-4FFC-8466-5E9A21940A00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8508E049-8D45-40C6-8531-522FA4EB0307}
 	EndGlobalSection
 EndGlobal
