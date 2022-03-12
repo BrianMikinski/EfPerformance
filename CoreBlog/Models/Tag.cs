@@ -14,4 +14,6 @@ public class Tag
 
     [StringLength(50)]
     public string Name { get; set; }
+
+    public IEnumerable<PostTag> PostTags { get; set; }
 }

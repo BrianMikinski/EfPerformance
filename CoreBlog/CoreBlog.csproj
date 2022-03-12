@@ -20,4 +20,8 @@
     <ProjectReference Include="..\SharedModels\Blog.SharedModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

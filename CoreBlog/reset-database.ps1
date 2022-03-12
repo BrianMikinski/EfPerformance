@@ -1,3 +1,3 @@
 
 # reset the database to having no migrations
-dotnet ef database update 0 --force
+dotnet ef database update 0

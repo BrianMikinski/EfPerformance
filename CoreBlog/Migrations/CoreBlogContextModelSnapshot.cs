@@ -11,13 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreBlog.Migrations
 {
     [DbContext(typeof(CoreBlogContext))]
-    partial class CoreBloggingContextModelSnapshot : ModelSnapshot
+    partial class CoreBlogContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -62,6 +62,21 @@ namespace CoreBlog.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("CoreBlog.Models.PostTag", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PostId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTags");
+                });
+
             modelBuilder.Entity("CoreBlog.Models.Tag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,12 +88,7 @@ namespace CoreBlog.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Tags");
                 });
@@ -94,16 +104,33 @@ namespace CoreBlog.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Tag", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostTag", b =>
                 {
-                    b.HasOne("CoreBlog.Models.Post", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("PostId");
+                    b.HasOne("CoreBlog.Models.Post", "Post")
+                        .WithMany("PostTags")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoreBlog.Models.Tag", "Tag")
+                        .WithMany("PostTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("CoreBlog.Models.Post", b =>
                 {
-                    b.Navigation("Tags");
+                    b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("CoreBlog.Models.Tag", b =>
+                {
+                    b.Navigation("PostTags");
                 });
 #pragma warning restore 612, 618
         }
