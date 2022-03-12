@@ -10,18 +10,27 @@ public class Post
         Tags = new List<Tag>();
     }
 
+    public static Post NewPost(Category category, IEnumerable<Tag> tags) => new()
+    { 
+        Id = Guid.NewGuid(),
+        Category = category,
+        Tags = tags,
+        Title = "EF Core is awesome!",
+        Content = "Some ramblings on EF Core",
+    };
+
     [Key]
-    public Guid Id {get; set;}
+    public Guid Id {get; init;}
 
     [StringLength(50)]
-    public string? Title {get; set;}
+    public string? Title {get; init;}
 
     [StringLength(1000)]
-    public string? Content {get; set;}
+    public string? Content {get; init;}
     
-    public Guid CategoryId {get; set;}
+    public Guid CategoryId {get; init;}
 
-    public Category Category {get; set;}
+    public Category Category {get; init;}
 
-    public IEnumerable<Tag> Tags {get; set;}
+    public IEnumerable<Tag> Tags {get; init;}
 }

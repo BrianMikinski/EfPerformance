@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CoreBlog\CoreBlog.csproj" />
     <ProjectReference Include="..\Blog\Blog.csproj" />
   </ItemGroup>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CoreBlog.Models
 {
-    public partial class CoreBloggingContext : DbContext
+    public partial class CoreBlogContext : DbContext
     {
         public DbSet<Post> Posts {get; set;}
 
@@ -13,11 +13,11 @@ namespace CoreBlog.Models
 
         public DbSet<Tag> Tags {get; set;}
 
-        public CoreBloggingContext()
+        public CoreBlogContext()
         {
         }
 
-        public CoreBloggingContext(DbContextOptions<CoreBloggingContext> options)
+        public CoreBlogContext(DbContextOptions<CoreBlogContext> options)
             : base(options)
         {
 
