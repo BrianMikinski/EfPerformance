@@ -9,7 +9,7 @@ public class Post
         Category = new ();
     }
 
-    public static Post NewPost(Category category, IEnumerable<Tag> tags)
+    public static (Post, IEnumerable<PostTag>) NewPost(Category category, IEnumerable<Tag> tags)
     {
         var post = new Post()
         {
@@ -30,7 +30,7 @@ public class Post
             });
         }
 
-        return post;
+        return (post, postTags);
     }
 
     [Key]

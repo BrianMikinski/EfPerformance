@@ -45,9 +45,12 @@ public class EfCoreProfilingService
 
         for(int i = 0; i < SeedLimit; i++)
         {
-            var post = Post.NewPost(categories[0], tags);
+            var (post, postTags) = Post.NewPost(categories[0], tags);
 
             _coreBlogContext.Posts.Add(post);
+            _coreBlogContext.SaveChanges(true);
+
+            _coreBlogContext.PostTags.AddRange(postTags);
             _coreBlogContext.SaveChanges(true);
         }
     }
@@ -83,10 +86,17 @@ public class EfCoreProfilingService
     [GlobalCleanup]
     public void GlobalCleanup()
     {
-        _coreBlogContext.Tags.FromSqlRaw("TRUNCATE TABLE [PostTags]");
-        _coreBlogContext.Tags.FromSqlRaw("TRUNCATE TABLE [Posts]");
-        _coreBlogContext.Tags.FromSqlRaw("TRUNCATE TABLE [Categories]");
-        _coreBlogContext.Tags.FromSqlRaw("TRUNCATE TABLE [Tags]");
+        _coreBlogContext
+            .Database.ExecuteSqlRaw("delete from PostTags where 1=1");
+
+        _coreBlogContext
+            .Database.ExecuteSqlRaw("delete from Posts where 1=1");
+
+        _coreBlogContext
+            .Database.ExecuteSqlRaw("delete from Categories where 1=1");
+
+        _coreBlogContext
+            .Database.ExecuteSqlRaw("delete from Tags where 1=1");
     }
 
     [IterationCleanup]

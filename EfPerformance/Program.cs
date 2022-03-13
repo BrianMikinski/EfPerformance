@@ -8,11 +8,9 @@ var coreProfilingService = new EfCoreProfilingService();
 
 coreProfilingService.SeedManyPostsData();
 
-
 coreProfilingService.GlobalCleanup();
 
 //BenchmarkRunner.Run<EfCoreProfilingService>();
 
 //Console.WriteLine("EF6 Profiling Service");
 //var ef6ProfilingService = new Ef6ProfilingService();
-
