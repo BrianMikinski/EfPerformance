@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreBlog.Models;
 
-public class Category
+[Table("Categories")]
+public class CategoryCore
 {
-    public static Category NewCategory() => new()
+    public static CategoryCore NewCategory() => new()
     {
         Id = Guid.NewGuid(),
         Name = "Software Engineering"

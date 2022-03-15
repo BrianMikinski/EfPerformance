@@ -5,8 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreBlog\CoreBlog.csproj" />
-    <ProjectReference Include="..\Blog\Blog.csproj" />
+    <ProjectReference Include="..\SharedModels\Blog.Benchmarks.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -7,13 +7,13 @@ namespace CoreBlog.Models
 {
     public partial class CoreBlogContext : DbContext
     {
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCore> Posts { get; set; }
 
-        public DbSet<PostTag> PostTags { get; set; }
+        public DbSet<PostTagCore> PostTags { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryCore> Categories { get; set; }
 
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<TagCore> Tags { get; set; }
 
         public CoreBlogContext()
         {
@@ -37,15 +37,15 @@ namespace CoreBlog.Models
         {
             OnModelCreatingPartial(modelBuilder);
 
-            modelBuilder.Entity<PostTag>()
+            modelBuilder.Entity<PostTagCore>()
                 .HasKey(t => new { t.PostId, t.TagId });
 
-            modelBuilder.Entity<PostTag>()
+            modelBuilder.Entity<PostTagCore>()
             .HasOne(pt => pt.Post)
             .WithMany(p => p.PostTags)
             .HasForeignKey(pt => pt.PostId);
 
-            modelBuilder.Entity<PostTag>()
+            modelBuilder.Entity<PostTagCore>()
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);

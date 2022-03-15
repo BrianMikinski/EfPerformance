@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreBlog.Migrations
 {
     [DbContext(typeof(CoreBlogContext))]
-    [Migration("20220312030621_InitialCreate")]
+    [Migration("20220315045437_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace CoreBlog.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CoreBlog.Models.Category", b =>
+            modelBuilder.Entity("CoreBlog.Models.CategoryCore", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,13 +40,13 @@ namespace CoreBlog.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Post", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostCore", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -64,7 +64,7 @@ namespace CoreBlog.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.PostTag", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostTagCore", b =>
                 {
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -79,7 +79,7 @@ namespace CoreBlog.Migrations
                     b.ToTable("PostTags");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Tag", b =>
+            modelBuilder.Entity("CoreBlog.Models.TagCore", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,26 +95,24 @@ namespace CoreBlog.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Post", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostCore", b =>
                 {
-                    b.HasOne("CoreBlog.Models.Category", "Category")
+                    b.HasOne("CoreBlog.Models.CategoryCore", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.PostTag", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostTagCore", b =>
                 {
-                    b.HasOne("CoreBlog.Models.Post", "Post")
+                    b.HasOne("CoreBlog.Models.PostCore", "Post")
                         .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreBlog.Models.Tag", "Tag")
+                    b.HasOne("CoreBlog.Models.TagCore", "Tag")
                         .WithMany("PostTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,12 +123,12 @@ namespace CoreBlog.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Post", b =>
+            modelBuilder.Entity("CoreBlog.Models.PostCore", b =>
                 {
                     b.Navigation("PostTags");
                 });
 
-            modelBuilder.Entity("CoreBlog.Models.Tag", b =>
+            modelBuilder.Entity("CoreBlog.Models.TagCore", b =>
                 {
                     b.Navigation("PostTags");
                 });

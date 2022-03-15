@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreBlog.Models;
 
-public class Tag
+[Table("Tags")]
+public class TagCore
 {
-    public static Tag NewTag() => new()
+    public static TagCore NewTag() => new()
     {
         Id = Guid.NewGuid(),
         Name = "EF Core"
@@ -15,5 +17,5 @@ public class Tag
     [StringLength(50)]
     public string Name { get; set; }
 
-    public IEnumerable<PostTag> PostTags { get; set; }
+    public IEnumerable<PostTagCore> PostTags { get; set; }
 }

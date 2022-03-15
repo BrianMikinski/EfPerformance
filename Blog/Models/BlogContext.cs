@@ -2,9 +2,9 @@
 
 namespace Blog.Models;
 
-public class SchoolContext : DbContext
+public class BlogContext : DbContext
 {
-    public SchoolContext()
+    public BlogContext()
         : base("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;")
     {
         

@@ -40,7 +40,7 @@ namespace CoreBlog.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,8 +49,7 @@ namespace CoreBlog.Migrations
                         name: "FK_Posts_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
