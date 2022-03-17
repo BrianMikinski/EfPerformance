@@ -5,7 +5,7 @@ namespace Blog.Models;
 public class BlogContext : DbContext
 {
     public BlogContext()
-        : base("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;")
+        : base("Server=(localdb)\\mssqllocaldb;Database=Blog;Trusted_Connection=True;")
     {
         Configuration.LazyLoadingEnabled = false; 
     }
