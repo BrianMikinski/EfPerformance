@@ -7,7 +7,7 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
     [GlobalSetup]
     public void GlobalSetup()
     {
-        AddPostsSeedLimit();
+        AddPostsToSeedLimit();
     }
 
     [IterationSetup]

@@ -1,7 +1,5 @@
-﻿using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 using Blog.Benchmarks;
-using CoreBlog;
 
 Console.WriteLine("Hello, World! Welcome to the EF Performance Contest");
 
@@ -17,5 +15,4 @@ BenchmarkRunner.Run<RetrieveSingleEntityBenchmark>();
 var (coreBlogDiagnostics,  blogDiagnostics)= benchmarkBase.TableDiagnostics();
 
 coreBlogDiagnostics.PrintTableDiagnostics();
-
 blogDiagnostics.PrintTableDiagnostics(false);

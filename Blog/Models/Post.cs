@@ -16,7 +16,7 @@ public class Post
     public Post()
     {
         Category = new();
-        Tags = new List<Tag>();
+        PostTags = new List<PostTag>();
     }
 
     [Key]
@@ -30,7 +30,7 @@ public class Post
 
     public Guid CategoryId { get; set; }
 
-    public Category Category { get; set; }
+    public Category Category { get; private set; }
 
-    public IEnumerable<Tag> Tags { get; set; }
+    public IEnumerable<PostTag> PostTags { get; private set; }
 }

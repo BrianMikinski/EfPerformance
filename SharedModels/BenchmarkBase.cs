@@ -90,7 +90,7 @@ public class BenchmarkBase
     /// <summary>
     /// 
     /// </summary>
-    public void AddPostsSeedLimit()
+    public void AddPostsToSeedLimit()
     {
         PostsAddEfCore();
         PostsAddEf6();
