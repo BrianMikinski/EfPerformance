@@ -10,9 +10,11 @@ public class BlogDataDiagnostics
 
     public int? TagsCount { get; init; }
 
-    public void PrintTableDiagnostics()
+    public void PrintTableDiagnostics(bool isCoreTable = true)
     {
-        Console.WriteLine($"Current Table Row Counts:");
+        var table = isCoreTable ? "Core Blog" : "Blog";
+
+        Console.WriteLine($"{table} Table Row Counts:");
         Console.WriteLine($"Total Posts: {PostsCount}");
         Console.WriteLine($"Total PostTags: {PostTagsCount}");
         Console.WriteLine($"Total Categories: {CategoriesCount}");

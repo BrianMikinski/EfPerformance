@@ -3,6 +3,16 @@
 namespace Blog.Models;
 public class Post
 {
+    public static Post NewPost()
+    {
+        return new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "EF6 is old school!",
+            Content = "Some cool old school EF6 stuff"
+        };
+    }
+
     public Post()
     {
         Category = new();

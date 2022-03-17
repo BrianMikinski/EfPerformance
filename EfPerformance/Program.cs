@@ -9,11 +9,13 @@ Console.WriteLine("EF Core 6 Profiling Service");
 var benchmarkBase = new BenchmarkBase();
 
 //coreProfilingService.DatabaseSeed();
-BenchmarkRunner.Run<EfCoreProfilingService>();
+BenchmarkRunner.Run<RetrieveSingleEntityBenchmark>();
 
 //Console.WriteLine("EF6 Profiling Service");
 //var ef6ProfilingService = new Ef6ProfilingService();
 
-var tableDiagnostics = benchmarkBase.TableDiagnostics();
+var (coreBlogDiagnostics,  blogDiagnostics)= benchmarkBase.TableDiagnostics();
 
-tableDiagnostics.PrintTableDiagnostics();
+coreBlogDiagnostics.PrintTableDiagnostics();
+
+blogDiagnostics.PrintTableDiagnostics(false);
