@@ -7,7 +7,7 @@ public class AddAndUpdateSingleEntityBenchmark : BenchmarkBase
     /// <summary>
     /// Retrieve and update a single entity with ef core
     /// </summary>
-    [Benchmark]
+    //[Benchmark]
     public void PostRetrieveAndUpdateEfCore()
     {
         var post = _coreBlogContext.Posts.SingleOrDefault();
@@ -20,7 +20,7 @@ public class AddAndUpdateSingleEntityBenchmark : BenchmarkBase
     /// <summary>
     /// Retrieve and update a single entity with ef 6
     /// </summary>
-    [Benchmark]
+    //[Benchmark]
     public void PostRetrieveAndUpdateEf6()
     {
 

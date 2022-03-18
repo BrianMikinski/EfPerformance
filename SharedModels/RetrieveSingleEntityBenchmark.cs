@@ -1,7 +1,10 @@
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
 
 namespace Blog.Benchmarks;
 
+[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
+[CategoriesColumn]
 public class RetrieveSingleEntityBenchmark : BenchmarkBase
 {
     [GlobalSetup]
@@ -19,16 +22,16 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
     /// <summary>
     /// Retrieve single entity
     /// </summary>
-    [Benchmark]
+    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark]
     public void PostRetrievalCore()
     {
-        var firstPost = _coreBlogContext.Posts.SingleOrDefault();
+        var firstPost = _coreBlogContext.Posts.FirstOrDefault();
     }
 
-    [Benchmark]
+    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark(Baseline = true)]
     public void PostRetrieval()
     {
-        var firstPost = _blogContext.Posts.SingleOrDefault();
+        var firstPost = _blogContext.Posts.FirstOrDefault();
     }
 
     [GlobalCleanup]

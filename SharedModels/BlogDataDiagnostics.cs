@@ -15,9 +15,11 @@ public class BlogDataDiagnostics
         var table = isCoreTable ? "Core Blog" : "Blog";
 
         Console.WriteLine($"{table} Table Row Counts:");
+        Console.WriteLine();
         Console.WriteLine($"Total Posts: {PostsCount}");
         Console.WriteLine($"Total PostTags: {PostTagsCount}");
         Console.WriteLine($"Total Categories: {CategoriesCount}");
         Console.WriteLine($"Total Tags: {TagsCount}");
+        Console.WriteLine();
     }
 }

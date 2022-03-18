@@ -7,8 +7,11 @@ namespace Blog.Benchmarks;
 
 [MinColumn]
 [MaxColumn]
-public class BenchmarkBase
+public abstract class BenchmarkBase
 {
+    protected const string EF_CORE_CATEGORY = "EF Core";
+    protected const string EF_6_CATEGORY = "EF 6";
+
     protected CoreBlogContext _coreBlogContext;
     protected BlogContext _blogContext;
 
