@@ -23,10 +23,10 @@
                         Id = c.Guid(nullable: false, identity: true),
                         Title = c.String(maxLength: 50),
                         Content = c.String(maxLength: 1000),
-                        CategoryId = c.Guid(nullable: false),
+                        CategoryId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Categories", t => t.CategoryId, cascadeDelete: true)
+                .ForeignKey("dbo.Categories", t => t.CategoryId)
                 .Index(t => t.CategoryId);
             
             CreateTable(

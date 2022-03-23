@@ -9,6 +9,8 @@ BenchmarkSwitcher.FromAssembly(typeof(BenchmarkBase).Assembly).Run(args, GetGlob
 Console.WriteLine("Post profiling statistics: ");
 var ef6ProfilingService = new ProfilingService();
 
+//ef6ProfilingService.TestSingleEntity();
+
 var (coreBlogDiagnostics, blogDiagnostics) = ef6ProfilingService.TableDiagnostics();
 
 coreBlogDiagnostics.PrintTableDiagnostics();

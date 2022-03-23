@@ -23,15 +23,15 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
     /// Retrieve single entity
     /// </summary>
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark]
-    public void PostRetrievalCore()
+    public void PostRetrieveSingleEntityEfCore()
     {
-        var firstPost = _coreBlogContext.Posts.FirstOrDefault();
+        _coreBlogContext.Posts.FirstOrDefault();
     }
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark(Baseline = true)]
-    public void PostRetrieval()
+    public void PostRetrieveSingleEntityEf()
     {
-        var firstPost = _blogContext.Posts.FirstOrDefault();
+        _blogContext.Posts.FirstOrDefault();
     }
 
     [GlobalCleanup]

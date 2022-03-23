@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreBlog.Migrations
 {
     [DbContext(typeof(CoreBlogContext))]
-    [Migration("20220315045437_InitialCreate")]
+    [Migration("20220323035705_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,9 @@ namespace CoreBlog.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PostId", "TagId");

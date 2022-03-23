@@ -70,6 +70,9 @@ namespace CoreBlog.Migrations
                     b.Property<Guid>("TagId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("PostId", "TagId");
 
                     b.HasIndex("TagId");

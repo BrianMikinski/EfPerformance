@@ -19,8 +19,8 @@ public abstract class BenchmarkBase
 
     public BenchmarkBase()
     {
-        _coreBlogContext = new ();
-        _blogContext = new ();
+        _coreBlogContext = new();
+        _blogContext = new();
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void NewDbContexts()
     {
-        _coreBlogContext = new ();
-        _blogContext = new ();
+        _coreBlogContext = new();
+        _blogContext = new();
     }
 
     /// <summary>
@@ -93,28 +93,56 @@ public abstract class BenchmarkBase
     /// <summary>
     /// 
     /// </summary>
-    public void AddPostsToSeedLimit()
+    public void AddPostsToSeedLimit(int? overridenLimit = null, bool isBulkInsert = false)
     {
-        PostsAddEfCore();
-        PostsAddEf6();
+        if (overridenLimit.HasValue)
+        {
+            SeedLimit = overridenLimit.Value;
+        }
+
+        if (!isBulkInsert)
+        {
+            PostsAddEfCore();
+            PostsAddEf6();
+        }
+        else
+        {
+            PostsAddBulkInsertEfCore(); ;
+            PostsAddBulkInsertEf6();
+        }
+
     }
 
     /// <summary>
-    /// EF Core multiple posts add
+    /// EF Core multiple posts using native Add
     /// </summary>
     private void PostsAddEfCore()
     {
         for (int i = 0; i < SeedLimit; i++)
         {
             var post = PostCore.NewPost();
-
             _coreBlogContext.Posts.Add(post);
-            _coreBlogContext.SaveChanges(true);
+            _coreBlogContext.SaveChanges();
         }
     }
 
     /// <summary>
-    /// EF6 multiple psots add
+    /// EF Core multiple posts with bulk insert
+    /// </summary>
+    private void PostsAddBulkInsertEfCore()
+    {
+        List<PostCore> posts = new();
+
+        for (int i = 0; i < SeedLimit; i++)
+        {
+            posts.Add(PostCore.NewPost());
+        }
+
+        _coreBlogContext.BulkInsert(posts);
+    }
+
+    /// <summary>
+    /// EF6 multiple post with native add
     /// </summary>
     private void PostsAddEf6()
     {
@@ -125,6 +153,21 @@ public abstract class BenchmarkBase
             _blogContext.Posts.Add(post);
             _blogContext.SaveChanges();
         }
+    }
+
+    /// <summary>
+    /// EF6 multiple psots add
+    /// </summary>
+    private void PostsAddBulkInsertEf6()
+    {
+        List<Post> posts = new();
+
+        for (int i = 0; i < SeedLimit; i++)
+        {
+            posts.Add(Post.NewPost());
+        }
+
+        _blogContext.BulkInsert(posts);
     }
 
     public void PostInsertNoChangeTracker()

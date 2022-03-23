@@ -1,7 +1,9 @@
 # EfPerformance
 Entity Framework Performance Testing
 
-
+## NOTES ON RUNNING PERFORMANCE QUERIES
+- Close out of all other sql connection related apps. I have seen multiple connections affect db performance for a single server
+- Make sure your DB's are both correct for EF6 and EF Core
 
 ## create new angular app
 dotnet new angular --name DotNet6AngularTemplate

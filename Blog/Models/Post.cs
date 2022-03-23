@@ -25,12 +25,17 @@ public class Post
     public Guid Id { get; set; }
 
     [StringLength(50)]
-    public string? Title { get; set; }
+    public string? Title { get; private set; }
+
+    public void UpdateTitle(string newTitle)
+    {
+        Title = newTitle;
+    }
 
     [StringLength(1000)]
     public string? Content { get; set; }
 
-    public Guid CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
 
     public Category Category { get; private set; }
 
