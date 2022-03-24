@@ -26,10 +26,10 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
     [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark(Baseline = true)]
     public void PostRetrieveListEf6()
     {
-       var posts = _blogContext
-                    .Posts
-                    .AsNoTracking()
-                    .ToList();
+        var posts = _blogContext
+                     .Posts
+                     .AsNoTracking()
+                     .ToList();
     }
 
     /// <summary>
@@ -38,9 +38,10 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
     [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark]
     public void PostRetrieveListEfCore()
     {
-      var posts = _coreBlogContext
-                    .Posts
-                    .ToList();
+        var posts = _coreBlogContext
+                      .Posts
+                      .AsNoTracking()
+                      .ToList();
     }
 
     [GlobalCleanup]
