@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
+using System.Data.Entity;
 
 namespace Blog.Benchmarks;
 
@@ -10,7 +11,7 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
     [GlobalSetup]
     public void GlobalSetup()
     {
-        AddPostsToSeedLimit(10000, true);
+        AddPostsToSeedLimit(100000, true);
     }
 
     [IterationSetup]
@@ -25,7 +26,10 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
     [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark(Baseline = true)]
     public void PostRetrieveListEf6()
     {
-        var post = _blogContext.Posts.ToList();
+       var posts = _blogContext
+                    .Posts
+                    .AsNoTracking()
+                    .ToList();
     }
 
     /// <summary>
@@ -34,7 +38,9 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
     [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark]
     public void PostRetrieveListEfCore()
     {
-        var posts = _coreBlogContext.Posts.ToList();
+      var posts = _coreBlogContext
+                    .Posts
+                    .ToList();
     }
 
     [GlobalCleanup]

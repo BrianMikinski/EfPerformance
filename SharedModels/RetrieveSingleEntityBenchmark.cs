@@ -19,6 +19,12 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
         NewDbContexts();
     }
 
+    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark(Baseline = true)]
+    public void PostRetrieveSingleEntityEf()
+    {
+        _blogContext.Posts.FirstOrDefault();
+    }
+
     /// <summary>
     /// Retrieve single entity
     /// </summary>
@@ -26,12 +32,6 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
     public void PostRetrieveSingleEntityEfCore()
     {
         _coreBlogContext.Posts.FirstOrDefault();
-    }
-
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark(Baseline = true)]
-    public void PostRetrieveSingleEntityEf()
-    {
-        _blogContext.Posts.FirstOrDefault();
     }
 
     [GlobalCleanup]
