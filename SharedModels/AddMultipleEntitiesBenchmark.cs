@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using Blog.Models;
-using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 

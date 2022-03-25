@@ -12,7 +12,7 @@ public class AddSingleEntityBenchmark : BenchmarkBase
     [IterationSetup]
     public void IterationSetup()
     {
-        NewDbContexts();
+        NewDbContexts(true);
     }
 
     [BenchmarkCategory(nameof(AddSingleEntityBenchmark)), Benchmark(Baseline = true)]

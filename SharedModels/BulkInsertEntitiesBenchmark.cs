@@ -23,7 +23,7 @@ public class BulkInsertEntitiesBenchmark : BenchmarkBase
     [BenchmarkCategory(nameof(BulkInsertEntitiesBenchmark)), Benchmark(Baseline = true)]
     public void AddRangeEntitiesEfCore()
     {
-        //RangeInsertEFCore();
+        PostsAddRangeInsertEFCore(SeedLimit);
     }
 
     [BenchmarkCategory(nameof(BulkInsertEntitiesBenchmark)), Benchmark]

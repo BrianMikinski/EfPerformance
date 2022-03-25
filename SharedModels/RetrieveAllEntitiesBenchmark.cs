@@ -6,6 +6,7 @@ namespace Blog.Benchmarks;
 
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
+[RPlotExporter]
 public class RetrieveAllEntitiesBenchmark : BenchmarkBase
 {
     [GlobalSetup]
@@ -17,7 +18,7 @@ public class RetrieveAllEntitiesBenchmark : BenchmarkBase
     [IterationSetup]
     public void IterationSetup()
     {
-        NewDbContexts(false);
+        NewDbContexts();
     }
 
     [BenchmarkCategory(nameof(RetrieveAllEntitiesBenchmark)), Benchmark(Baseline = true)]
