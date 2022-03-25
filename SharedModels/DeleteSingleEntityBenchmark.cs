@@ -1,15 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BenchmarkDotNet.Attributes;
 
 namespace Blog.Benchmarks;
 
 public class DeleteSingleEntityBenchmark :BenchmarkBase
 {
-    public void PostDelete()
+    [GlobalSetup]
+    public void GlobalSetup()
     {
+        AddPostsToSeedLimit();
+    }
 
+    [IterationSetup]
+    public void IterationSetup()
+    {
+        NewDbContexts();
+    }
+
+    [BenchmarkCategory(nameof(DeleteSingleEntityBenchmark)), Benchmark(Baseline = true)]
+    public void DeleteSingleEntityEf()
+    {
+       throw new NotImplementedException();
+    }
+
+    [BenchmarkCategory(nameof(DeleteSingleEntityBenchmark)), Benchmark]
+    public void DeleteSingleEntityEfCore()
+    {
+        throw new NotImplementedException();
+    }
+
+    [GlobalCleanup]
+    public void GlobalCleanup()
+    {
+        BaseCleanup();
     }
 }

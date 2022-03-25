@@ -19,20 +19,22 @@ public class DemoBenchmark : BenchmarkBase
         
     }
 
-    /// <summary>
-    /// Retrieve single entity
-    /// </summary>
     [BenchmarkCategory(nameof(DemoBenchmark)), Benchmark]
     public void NewFunction()
     {
-        //throw new NotImplementedException();
-        //var firstPost = _coreBlogContext.Posts.FirstOrDefault();
+
     }
 
     [BenchmarkCategory(nameof(DemoBenchmark)), Benchmark(Baseline = true)]
     public void OldFunction()
     {
-        //throw new NotImplementedException();
+
+    }
+
+    [IterationCleanup]
+    public void IterationCleanup()
+    {
+
     }
 
     [GlobalCleanup]

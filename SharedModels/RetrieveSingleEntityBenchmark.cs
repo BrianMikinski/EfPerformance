@@ -25,9 +25,6 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
         _blogContext.Posts.FirstOrDefault();
     }
 
-    /// <summary>
-    /// Retrieve single entity
-    /// </summary>
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark)), Benchmark]
     public void PostRetrieveSingleEntityEfCore()
     {

@@ -6,24 +6,21 @@ namespace Blog.Benchmarks;
 
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
-public class RetrieveManyEntitiesBenchmark : BenchmarkBase
+public class RetrieveAllEntitiesBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()
     {
-        AddPostsToSeedLimit(100000, true);
+        AddPostsToSeedLimit(1000, true);
     }
 
     [IterationSetup]
     public void IterationSetup()
     {
-        NewDbContexts();
+        NewDbContexts(false);
     }
 
-    /// <summary>
-    /// Retrieve and update a single entity with ef 6
-    /// </summary>
-    [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark(Baseline = true)]
+    [BenchmarkCategory(nameof(RetrieveAllEntitiesBenchmark)), Benchmark(Baseline = true)]
     public void PostRetrieveListEf6()
     {
         var posts = _blogContext
@@ -32,10 +29,7 @@ public class RetrieveManyEntitiesBenchmark : BenchmarkBase
                      .ToList();
     }
 
-    /// <summary>
-    /// Retrieve and update a single entity with ef core
-    /// </summary>
-    [BenchmarkCategory(nameof(RetrieveManyEntitiesBenchmark)), Benchmark]
+    [BenchmarkCategory(nameof(RetrieveAllEntitiesBenchmark)), Benchmark]
     public void PostRetrieveListEfCore()
     {
         var posts = _coreBlogContext

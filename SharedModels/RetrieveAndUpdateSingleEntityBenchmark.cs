@@ -10,18 +10,15 @@ public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
     [GlobalSetup]
     public void GlobalSetup()
     {
-        AddPostsToSeedLimit(10000, true);
+        AddPostsToSeedLimit(1000, true);
     }
 
     [IterationSetup]
     public void IterationSetup()
     {
-        NewDbContexts();
+        NewDbContexts(false);
     }
 
-    /// <summary>
-    /// Retrieve and update a single entity with ef 6
-    /// </summary>
     [BenchmarkCategory(nameof(RetrieveAndUpdateSingleEntityBenchmark)), Benchmark(Baseline = true)]
     public void PostRetrieveAndUpdateEf6()
     {
@@ -31,14 +28,10 @@ public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
         _coreBlogContext.SaveChanges();
     }
 
-    /// <summary>
-    /// Retrieve and update a single entity with ef core
-    /// </summary>
     [BenchmarkCategory(nameof(RetrieveAndUpdateSingleEntityBenchmark)), Benchmark]
     public void PostRetrieveAndUpdateEfCore()
     {
         var post = _coreBlogContext.Posts.FirstOrDefault();
-
         post?.UpdateTitle("EF Core will Rock your socks off!");
 
         _coreBlogContext.SaveChanges();

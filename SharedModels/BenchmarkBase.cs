@@ -26,10 +26,13 @@ public abstract class BenchmarkBase
     /// <summary>
     /// Create new db contexts for benchmarks
     /// </summary>
-    protected void NewDbContexts()
+    protected void NewDbContexts(bool isEnabled = false)
     {
-        _coreBlogContext = new();
-        _blogContext = new();
+        if (isEnabled)
+        {
+            _coreBlogContext = new();
+            _blogContext = new();
+        }
     }
 
     /// <summary>
@@ -116,7 +119,7 @@ public abstract class BenchmarkBase
     /// <summary>
     /// EF Core multiple posts using native Add
     /// </summary>
-    private void PostsAddEfCore()
+    protected void PostsAddEfCore()
     {
         for (int i = 0; i < SeedLimit; i++)
         {
@@ -129,11 +132,13 @@ public abstract class BenchmarkBase
     /// <summary>
     /// EF Core multiple posts with bulk insert
     /// </summary>
-    private void PostsAddBulkInsertEfCore()
+    protected void PostsAddBulkInsertEfCore(int? overrideLimit = null)
     {
+        var limit = overrideLimit ?? SeedLimit;
+
         List<PostCore> posts = new();
 
-        for (int i = 0; i < SeedLimit; i++)
+        for (int i = 0; i < limit; i++)
         {
             posts.Add(PostCore.NewPost());
         }
@@ -142,9 +147,28 @@ public abstract class BenchmarkBase
     }
 
     /// <summary>
+    /// Add a range of posts to the ef core db context
+    /// </summary>
+    /// <param name="overrideLimit"></param>
+    protected void PostsAddRangeInsertEFCore(int? overrideLimit = null)
+    {
+        var limit = overrideLimit ?? SeedLimit;
+
+        List<PostCore> posts = new();
+
+        for (int i = 0; i < limit; i++)
+        {
+            posts.Add(new PostCore());
+        }
+
+        _coreBlogContext.Posts.AddRange(posts);
+        _coreBlogContext.SaveChanges();
+    }
+
+    /// <summary>
     /// EF6 multiple post with native add
     /// </summary>
-    private void PostsAddEf6()
+    protected void PostsAddEf6()
     {
         for (int i = 0; i < SeedLimit; i++)
         {
@@ -158,11 +182,13 @@ public abstract class BenchmarkBase
     /// <summary>
     /// EF6 multiple psots add
     /// </summary>
-    private void PostsAddBulkInsertEf6()
+    protected void PostsAddBulkInsertEf6(int? overrideLimit = null)
     {
+        var limit = overrideLimit.HasValue ? overrideLimit.Value : SeedLimit;
+
         List<Post> posts = new();
 
-        for (int i = 0; i < SeedLimit; i++)
+        for (int i = 0; i < limit; i++)
         {
             posts.Add(Post.NewPost());
         }

@@ -1,4 +1,3 @@
-
 using Blog.Models;
 using CoreBlog.Models;
 using System.Diagnostics;
@@ -7,12 +6,6 @@ namespace Blog.Benchmarks;
 
 public class ProfilingService : BenchmarkBase
 {
-        
-
-    public void AddManyEntitiesTest()
-    {
-    }
-
     public void TestSingleEntity()
     {
         // EF Core
@@ -42,13 +35,5 @@ public class ProfilingService : BenchmarkBase
         _blogContext.Posts.FirstOrDefault();
 
         stopWatch.Stop();
-
-        var test = "1234";
-
-        test = test + "hello world";
     }
-
-
-
-
 }
