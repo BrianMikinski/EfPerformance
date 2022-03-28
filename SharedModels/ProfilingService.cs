@@ -13,7 +13,7 @@ public class ProfilingService : BenchmarkBase
 
         _coreBlogContext.SaveChanges();
 
-        _coreBlogContext = new CoreBlogContext();
+        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
 
         Stopwatch coreStopWatch = new();
 

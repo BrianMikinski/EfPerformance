@@ -15,8 +15,11 @@ namespace CoreBlog.Models
 
         public DbSet<TagCore> Tags { get; set; }
 
-        public CoreBlogContext()
+        public static DbContextOptions<CoreBlogContext> NewDbContextOptions()
         {
+            return new DbContextOptionsBuilder<CoreBlogContext>()
+            .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;")
+            .Options;
         }
 
         public CoreBlogContext(DbContextOptions<CoreBlogContext> options)
@@ -28,11 +31,6 @@ namespace CoreBlog.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.LogTo(Console.WriteLine);
-
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

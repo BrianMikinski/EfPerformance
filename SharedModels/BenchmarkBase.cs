@@ -2,6 +2,7 @@
 using Blog.Models;
 using CoreBlog.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Blog.Benchmarks;
 
@@ -13,26 +14,38 @@ public abstract class BenchmarkBase
     protected const string EF_6_CATEGORY = "EF 6";
 
     protected CoreBlogContext _coreBlogContext;
+    protected readonly CoreBlogContext _coreBlogContextSingleton;
+    protected CoreBlogContext _coreBlogContextFromFactory;
+   
     protected BlogContext _blogContext;
+    protected readonly BlogContext _blogContextSingleton;
+   
 
     protected int SeedLimit = 1000;
 
+    private readonly PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
+
     public BenchmarkBase()
     {
-        _coreBlogContext = new();
+        _coreDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
+
+        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        _coreBlogContextFromFactory = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextSingleton = _coreDbContextFactory.CreateDbContext();
+
         _blogContext = new();
+        _blogContextSingleton = new();
     }
 
     /// <summary>
     /// Create new db contexts for benchmarks
     /// </summary>
-    protected void NewDbContexts(bool isEnabled = false)
+    protected void NewDbContexts()
     {
-        if (isEnabled)
-        {
-            _coreBlogContext = new();
-            _blogContext = new();
-        }
+        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        _coreBlogContextFromFactory = _coreDbContextFactory.CreateDbContext();
+        
+        _blogContext = new BlogContext();
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
     [IterationSetup]
     public void IterationSetup()
     {
-        NewDbContexts(false);
+        NewDbContexts();
     }
 
     [BenchmarkCategory(nameof(RetrieveAndUpdateSingleEntityBenchmark)), Benchmark(Baseline = true)]
