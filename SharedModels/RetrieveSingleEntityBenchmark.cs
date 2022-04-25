@@ -21,37 +21,37 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
     [Benchmark(Baseline = true)]
-    public void PostRetrieveSingleEntityEf6NewContext()
+    public void Ef6NewContextPostRetrieveSingleEntity()
     {
         _blogContext.Posts.FirstOrDefault();
     }
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
     [Benchmark]
-    public void PostRetrieveSingleEntityEf6Singleton()
+    public void Ef6SingletonPostRetrieveSingleEntity()
     {
         _blogContextSingleton.Posts.FirstOrDefault();
     }
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
     [Benchmark]
-    public void PostRetrieveSingleEntityEfCoreNewContext()
+    public void EfCoreNewContextPostRetrieveSingleEntity()
     {
         _coreBlogContext.Posts.FirstOrDefault();
     }
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
     [Benchmark]
-    public void PostRetrieveSingleEntityEfCoreSingleton()
+    public void EFCoreSingletonPostRetrieveSingleEntity()
     {
         _coreBlogContextSingleton.Posts.FirstOrDefault();
     }
 
     [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
     [Benchmark]
-    public void PostRetrieveSingleEntityEfCoreFactory()
+    public void EfCorePooledPostRetrieveSingleEntity()
     {
-        _coreBlogContextFromFactory.Posts.FirstOrDefault();
+        _coreBlogContextPooled.Posts.FirstOrDefault();
     }
 
     [GlobalCleanup]

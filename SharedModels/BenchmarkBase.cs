@@ -15,7 +15,7 @@ public abstract class BenchmarkBase
 
     protected CoreBlogContext _coreBlogContext;
     protected readonly CoreBlogContext _coreBlogContextSingleton;
-    protected CoreBlogContext _coreBlogContextFromFactory;
+    protected CoreBlogContext _coreBlogContextPooled;
    
     protected BlogContext _blogContext;
     protected readonly BlogContext _blogContextSingleton;
@@ -30,7 +30,7 @@ public abstract class BenchmarkBase
         _coreDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
 
         _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextFromFactory = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
         _coreBlogContextSingleton = _coreDbContextFactory.CreateDbContext();
 
         _blogContext = new();
@@ -43,7 +43,7 @@ public abstract class BenchmarkBase
     protected void NewDbContexts()
     {
         _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextFromFactory = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
         
         _blogContext = new BlogContext();
     }
