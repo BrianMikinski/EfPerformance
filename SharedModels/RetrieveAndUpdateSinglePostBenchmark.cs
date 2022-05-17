@@ -5,7 +5,7 @@ namespace Blog.Benchmarks;
 
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
-public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
+public class RetrieveAndUpdateSinglePostBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()
@@ -19,8 +19,8 @@ public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
         NewDbContexts();
     }
 
-    [BenchmarkCategory(nameof(RetrieveAndUpdateSingleEntityBenchmark)), Benchmark(Baseline = true)]
-    public void PostRetrieveAndUpdateEf6()
+    [BenchmarkCategory(nameof(Ef6RetrieveAndUpdatePost)), Benchmark(Baseline = true)]
+    public void Ef6RetrieveAndUpdatePost()
     {
         var post = _blogContext.Posts.FirstOrDefault();
         post?.UpdateTitle("Is this faster than EF Core");
@@ -28,8 +28,8 @@ public class RetrieveAndUpdateSingleEntityBenchmark : BenchmarkBase
         _coreBlogContext.SaveChanges();
     }
 
-    [BenchmarkCategory(nameof(RetrieveAndUpdateSingleEntityBenchmark)), Benchmark]
-    public void PostRetrieveAndUpdateEfCore()
+    [BenchmarkCategory(nameof(EfCoreRetrieveAndUpdatePost)), Benchmark]
+    public void EfCoreRetrieveAndUpdatePost()
     {
         var post = _coreBlogContext.Posts.FirstOrDefault();
         post?.UpdateTitle("EF Core will Rock your socks off!");

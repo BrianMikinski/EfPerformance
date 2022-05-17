@@ -23,7 +23,7 @@ public abstract class BenchmarkBase
 
     protected int SeedLimit = 1000;
 
-    private readonly PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
+    protected readonly PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
 
     public BenchmarkBase()
     {

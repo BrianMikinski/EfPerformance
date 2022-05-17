@@ -1,11 +1,13 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
+using Blog.Models;
+using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
-public class RetrieveSingleEntityBenchmark : BenchmarkBase
+public class RetrieveSinglePostBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()
@@ -13,45 +15,42 @@ public class RetrieveSingleEntityBenchmark : BenchmarkBase
         AddPostsToSeedLimit();
     }
 
-    [IterationSetup]
-    public void IterationSetup()
-    {
-        NewDbContexts();
-    }
-
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
+    [BenchmarkCategory(nameof(Ef6NewContextPostRetrieveSingleEntity))]
     [Benchmark(Baseline = true)]
     public void Ef6NewContextPostRetrieveSingleEntity()
     {
-        _blogContext.Posts.FirstOrDefault();
+        using var context = new BlogContext();
+        _ = context.Posts.FirstOrDefault();
     }
 
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
+    [BenchmarkCategory(nameof(Ef6SingletonPostRetrieveSingleEntity))]
     [Benchmark]
     public void Ef6SingletonPostRetrieveSingleEntity()
     {
-        _blogContextSingleton.Posts.FirstOrDefault();
+        _ = _blogContextSingleton.Posts.FirstOrDefault();
     }
 
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
+    [BenchmarkCategory(nameof(EfCoreNewContextPostRetrieveSingleEntity))]
     [Benchmark]
     public void EfCoreNewContextPostRetrieveSingleEntity()
     {
-        _coreBlogContext.Posts.FirstOrDefault();
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        _ = context.Posts.FirstOrDefault();
     }
 
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
+    [BenchmarkCategory(nameof(EFCoreSingletonPostRetrieveSingleEntity))]
     [Benchmark]
     public void EFCoreSingletonPostRetrieveSingleEntity()
     {
         _coreBlogContextSingleton.Posts.FirstOrDefault();
     }
 
-    [BenchmarkCategory(nameof(RetrieveSingleEntityBenchmark))]
+    [BenchmarkCategory(nameof(EfCorePooledPostRetrieveSingleEntity))]
     [Benchmark]
     public void EfCorePooledPostRetrieveSingleEntity()
     {
-        _coreBlogContextPooled.Posts.FirstOrDefault();
+        using var context = _coreDbContextFactory.CreateDbContext();
+        _ = context.Posts.FirstOrDefault();
     }
 
     [GlobalCleanup]
