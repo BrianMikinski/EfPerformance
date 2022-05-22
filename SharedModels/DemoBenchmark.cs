@@ -1,10 +1,8 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
-using System.Text;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
+[MemoryDiagnoser]
 [CategoriesColumn]
 public class DemoBenchmark : BenchmarkBase
 {
@@ -20,26 +18,16 @@ public class DemoBenchmark : BenchmarkBase
         // code that is run once prior to each iteration
     }
 
-    [BenchmarkCategory(nameof(DemoBenchmark))]
     [Benchmark(Baseline = true)]
     public void OldFunction()
     {
-        string firstName = "John";
-        string lastName = "Doe";
-        string name = firstName + " " + lastName;
+        Thread.Sleep(50);
     }
 
-    [BenchmarkCategory(nameof(DemoBenchmark))]
     [Benchmark]
     public void NewFunction()
     {
-        string firstName = "John";
-        string lastName = "Doe";
-        StringBuilder sb = new(firstName);
-
-        string name = sb.Append(" ")
-            .Append(lastName)
-            .ToString();
+        Thread.Sleep(100);
     }
 
     [IterationCleanup]

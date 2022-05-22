@@ -14,28 +14,16 @@ public abstract class BenchmarkBase
     protected const string EF_6_CATEGORY = "EF 6";
 
     protected CoreBlogContext _coreBlogContext;
-    protected readonly CoreBlogContext _coreBlogContextSingleton;
+    protected CoreBlogContext _coreBlogContextSingleton;
     protected CoreBlogContext _coreBlogContextPooled;
    
     protected BlogContext _blogContext;
-    protected readonly BlogContext _blogContextSingleton;
-   
+    protected BlogContext _blogContextSingleton;
 
     protected int SeedLimit = 1000;
 
-    protected readonly PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
+    protected PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
 
-    public BenchmarkBase()
-    {
-        _coreDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
-
-        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
-        _coreBlogContextSingleton = _coreDbContextFactory.CreateDbContext();
-
-        _blogContext = new();
-        _blogContextSingleton = new();
-    }
 
     /// <summary>
     /// Create new db contexts for benchmarks
@@ -104,6 +92,29 @@ public abstract class BenchmarkBase
     private void FullDatabaseSeedEf6()
     {
 
+    }
+
+    /// <summary>
+    /// Configure database setup
+    /// </summary>
+    public void ConfigDatabases()
+    {
+        // ef 6
+        _blogContext = new();
+        _blogContextSingleton = new();
+
+        _blogContext.Database.Delete();
+        _blogContext.Database.Create();
+
+        // ef core
+        _coreDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
+
+        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextSingleton = _coreDbContextFactory.CreateDbContext();
+
+        _coreBlogContext.Database.EnsureDeleted();
+        _coreBlogContext.Database.EnsureCreated();
     }
 
     /// <summary>

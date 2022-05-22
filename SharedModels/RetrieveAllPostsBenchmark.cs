@@ -1,20 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
 using System.Data.Entity;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-[CategoriesColumn]
+[MemoryDiagnoser]
 [RPlotExporter]
 public class RetrieveAllPostsBenchmark : BenchmarkBase
 {
-    [Params(1000)]
+    [Params(1, 10, 1000)]
     public int Rows;
 
     [GlobalSetup]
     public void GlobalSetup()
     {
+        ConfigDatabases();
         AddPostsToSeedLimit(Rows, true);
     }
 
@@ -24,21 +23,17 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
         NewDbContexts();
     }
 
-    [BenchmarkCategory(nameof(Ef6NewContextRetrieveAllPosts)), ]
     [Benchmark(Baseline = true)]
-    public void Ef6NewContextRetrieveAllPosts()
+    public void Ef6()
     {
-
-
         _ = _blogContext
                 .Posts
                 .AsNoTracking()
                 .ToList();
     }
 
-    [BenchmarkCategory(nameof(Ef6SingletonRetrieveAllPosts))]
     [Benchmark]
-    public void Ef6SingletonRetrieveAllPosts()
+    public void Ef6Singleton()
     {
         _ = _blogContextSingleton
                     .Posts
@@ -46,9 +41,8 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
                     .ToList();
     }
 
-    [BenchmarkCategory(nameof(EfCoreNewContextRetrieveAllPosts))]
     [Benchmark]
-    public void EfCoreNewContextRetrieveAllPosts()
+    public void EfCore()
     {
         _ = _coreBlogContext
                     .Posts
@@ -56,9 +50,8 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
                     .ToList();
     }
 
-    [BenchmarkCategory(nameof(EfCoreSingletonRetrieveAllPosts))]
     [Benchmark]
-    public void EfCoreSingletonRetrieveAllPosts()
+    public void EfCoreSingleton()
     {
         _ = _coreBlogContextSingleton
                     .Posts
@@ -66,18 +59,11 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
                     .ToList();
     }
 
-    [BenchmarkCategory(nameof(EfCorePooledRetrieveAllPosts))]
     [Benchmark]
-    public void EfCorePooledRetrieveAllPosts()
+    public void EfCorePooled()
     {
         _ = _coreBlogContextPooled.Posts
                 .AsNoTracking()
                 .ToList();
-    }
-
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        BaseCleanup();
     }
 }

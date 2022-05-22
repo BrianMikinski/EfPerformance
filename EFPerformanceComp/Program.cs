@@ -49,6 +49,7 @@ CREATE TABLE [Posts] (
         _pooledFactory = new PooledDbContextFactory<EfCoreContext>(_efCoreOptions);
     }
 
+    
     [Benchmark]
     public void EFCore()
     {
@@ -65,7 +66,7 @@ CREATE TABLE [Posts] (
         _ = EntityFrameworkQueryableExtensions.AsNoTracking(context.Posts).ToList();
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void EF6()
     {
         using var context = new Ef6Context();
