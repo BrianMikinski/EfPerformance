@@ -1,40 +1,64 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
 using Blog.Models;
 using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-[CategoriesColumn]
 public class AddSingleEntityBenchmark : BenchmarkBase
 {
-    [IterationSetup]
-    public void IterationSetup()
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        NewDbContexts();
+        ConfigDatabases();
     }
 
-    [BenchmarkCategory(nameof(AddSingleEntityBenchmark)), Benchmark(Baseline = true)]
-    public void AddSingleEntityEf6()
+    [Benchmark(Baseline = true)]
+    public void Ef6()
+    {
+        using var context = new BlogContext();
+
+        var post = Post.NewPost();
+
+        context.Posts.Add(post);
+        context.SaveChanges();
+    }
+
+    [Benchmark]
+    public void Ef6Singleton()
     {
         var post = Post.NewPost();
 
-        _blogContext.Posts.Add(post);
-        _blogContext.SaveChanges();
+        _blogContextSingleton.Posts.Add(post);
+        _blogContextSingleton.SaveChanges();
     }
 
-    [BenchmarkCategory(nameof(AddSingleEntityBenchmark)), Benchmark]
-    public void AddSingleEntityEfCore()
+    [Benchmark]
+    public void EfCore()
+    {
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+
+        var post = PostCore.NewPost();
+
+        context.Posts.Add(post);
+        context.SaveChanges();
+    }
+
+    [Benchmark]
+    public void EfCoreSingleton()
     {
         var post = PostCore.NewPost();
-        _coreBlogContext.Posts.Add(post);
-        _coreBlogContext.SaveChanges();
+        _coreBlogContextSingleton.Posts.Add(post);
+        _coreBlogContextSingleton.SaveChanges();
     }
 
-    [GlobalCleanup]
-    public void GlobalCleanup()
+    [Benchmark]
+    public void EfCorePooled()
     {
-        BaseCleanup();
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
+        var post = PostCore.NewPost();
+
+        context.Posts.Add(post);
+        context.SaveChanges();
     }
 }

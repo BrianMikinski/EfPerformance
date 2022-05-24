@@ -11,10 +11,10 @@ var ef6ProfilingService = new ProfilingService();
 
 //ef6ProfilingService.TestSingleEntity();
 
-var (coreBlogDiagnostics, blogDiagnostics) = ef6ProfilingService.TableDiagnostics();
+//var (coreBlogDiagnostics, blogDiagnostics) = ef6ProfilingService.TableDiagnostics();
 
-coreBlogDiagnostics.PrintTableDiagnostics();
-blogDiagnostics.PrintTableDiagnostics(false);
+//coreBlogDiagnostics.PrintTableDiagnostics();
+//blogDiagnostics.PrintTableDiagnostics(false);
 
 /// <summary>
 /// Programatic configuration of the jobs.

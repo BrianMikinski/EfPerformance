@@ -1,10 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
+using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-[CategoriesColumn]
 public class BulkInsertEntitiesBenchmark : BenchmarkBase
 {
     [GlobalSetup]
@@ -13,28 +11,34 @@ public class BulkInsertEntitiesBenchmark : BenchmarkBase
         SeedLimit = 10000;
     }
 
-
-    [IterationSetup]
-    public void IterationSetup()
+    [Benchmark(Baseline = true)]
+    public void EfCoreAddRange()
     {
-        NewDbContexts();
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
+        List<PostCore> posts = new();
+
+        for (int i = 0; i < SeedLimit; i++)
+        {
+            posts.Add(new PostCore());
+        }
+
+        context.Posts.AddRange(posts);
+        context.SaveChanges();
     }
 
-    [BenchmarkCategory(nameof(BulkInsertEntitiesBenchmark)), Benchmark(Baseline = true)]
-    public void AddRangeEntitiesEfCore()
+    [Benchmark]
+    public void EfCoreBulkInsertZzzEfExtensions()
     {
-        PostsAddRangeInsertEFCore(SeedLimit);
-    }
+        using var context = _corePooledDbContextFactory.CreateDbContext();
 
-    [BenchmarkCategory(nameof(BulkInsertEntitiesBenchmark)), Benchmark]
-    public void BulkInsertEntitiesEfCore()
-    {
-        PostsAddBulkInsertEfCore(SeedLimit);
-    }
+        List<PostCore> posts = new();
 
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        BaseCleanup();
+        for (int i = 0; i < SeedLimit; i++)
+        {
+            posts.Add(PostCore.NewPost());
+        }
+
+        context.BulkInsert(posts);
     }
 }

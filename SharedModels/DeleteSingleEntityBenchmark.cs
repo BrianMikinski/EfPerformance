@@ -1,10 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
+using Blog.Models;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-[CategoriesColumn]
 public class DeleteSingleEntityBenchmark :BenchmarkBase
 {
     [GlobalSetup]
@@ -13,39 +11,31 @@ public class DeleteSingleEntityBenchmark :BenchmarkBase
         AddPostsToSeedLimit();
     }
 
-    [IterationSetup]
-    public void IterationSetup()
+    [Benchmark(Baseline = true)]
+    public void Ef6()
     {
-        NewDbContexts();
-    }
+        using var context = new BlogContext();
 
-    [BenchmarkCategory(nameof(DeleteSingleEntityBenchmark)), Benchmark(Baseline = true)]
-    public void DeleteSingleEntityEf()
-    {
-        var post = _blogContext.Posts.FirstOrDefault();
+        var post = context.Posts.FirstOrDefault();
 
         if(post != null)
         {
-            _blogContext.Posts.Remove(post);
-            _blogContext.SaveChanges();
+            context.Posts.Remove(post);
+            context.SaveChanges();
         }
     }
 
-    [BenchmarkCategory(nameof(DeleteSingleEntityBenchmark)), Benchmark]
-    public void DeleteSingleEntityEfCore()
+    [Benchmark]
+    public void EfCorePooled()
     {
-        var post = _coreBlogContext.Posts.FirstOrDefault();
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
+        var post = context.Posts.FirstOrDefault();
 
         if(post != null)
         {
-            _coreBlogContext.Posts.Remove(post);
-            _coreBlogContext.SaveChanges();
+            context.Posts.Remove(post);
+            context.SaveChanges();
         }
-    }
-
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        //BaseCleanup();
     }
 }

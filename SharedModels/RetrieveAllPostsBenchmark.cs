@@ -1,10 +1,10 @@
 using BenchmarkDotNet.Attributes;
+using Blog.Models;
+using CoreBlog.Models;
 using System.Data.Entity;
 
 namespace Blog.Benchmarks;
 
-[MemoryDiagnoser]
-[RPlotExporter]
 public class RetrieveAllPostsBenchmark : BenchmarkBase
 {
     [Params(1, 10, 1000)]
@@ -17,16 +17,11 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
         AddPostsToSeedLimit(Rows, true);
     }
 
-    [IterationSetup]
-    public void IterationSetup()
-    {
-        NewDbContexts();
-    }
-
     [Benchmark(Baseline = true)]
     public void Ef6()
     {
-        _ = _blogContext
+        using var context = new BlogContext();
+        _ = context
                 .Posts
                 .AsNoTracking()
                 .ToList();
@@ -44,7 +39,8 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
     [Benchmark]
     public void EfCore()
     {
-        _ = _coreBlogContext
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        _ = context
                     .Posts
                     .AsNoTracking()
                     .ToList();
@@ -62,7 +58,9 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
     [Benchmark]
     public void EfCorePooled()
     {
-        _ = _coreBlogContextPooled.Posts
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
+        _ = context.Posts
                 .AsNoTracking()
                 .ToList();
     }

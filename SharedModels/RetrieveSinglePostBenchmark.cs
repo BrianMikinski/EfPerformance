@@ -4,7 +4,6 @@ using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
-[MemoryDiagnoser]
 public class RetrieveSinglePostBenchmark : BenchmarkBase
 {
     [GlobalSetup]
@@ -36,7 +35,7 @@ public class RetrieveSinglePostBenchmark : BenchmarkBase
     }
 
     [Benchmark]
-    public void EFCoreSingleton()
+    public void EfCoreSingleton()
     {
         _coreBlogContextSingleton.Posts.FirstOrDefault();
     }
@@ -44,7 +43,7 @@ public class RetrieveSinglePostBenchmark : BenchmarkBase
     [Benchmark]
     public void EfCorePooled()
     {
-        using var context = _coreDbContextFactory.CreateDbContext();
+        using var context = _corePooledDbContextFactory.CreateDbContext();
         _ = context.Posts.FirstOrDefault();
     }
 }

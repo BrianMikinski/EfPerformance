@@ -1,45 +1,36 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Configs;
+using Blog.Models;
 
 namespace Blog.Benchmarks;
 
-[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-[CategoriesColumn]
 public class RetrieveAndUpdateSinglePostBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()
     {
-        AddPostsToSeedLimit(1000, true);
+        ConfigDatabases();
+        AddPostsToSeedLimit(10000, true);
     }
 
-    [IterationSetup]
-    public void IterationSetup()
+    [Benchmark(Baseline = true)]
+    public void Ef6()
     {
-        NewDbContexts();
-    }
-
-    [BenchmarkCategory(nameof(Ef6RetrieveAndUpdatePost)), Benchmark(Baseline = true)]
-    public void Ef6RetrieveAndUpdatePost()
-    {
-        var post = _blogContext.Posts.FirstOrDefault();
+        using var context = new BlogContext();
+        
+        var post = context.Posts.FirstOrDefault();
         post?.UpdateTitle("Is this faster than EF Core");
 
-        _coreBlogContext.SaveChanges();
+        context.SaveChanges();
     }
 
-    [BenchmarkCategory(nameof(EfCoreRetrieveAndUpdatePost)), Benchmark]
-    public void EfCoreRetrieveAndUpdatePost()
+    [Benchmark]
+    public void EfCorePooled()
     {
-        var post = _coreBlogContext.Posts.FirstOrDefault();
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+        
+        var post = context.Posts.FirstOrDefault();
         post?.UpdateTitle("EF Core will Rock your socks off!");
 
-        _coreBlogContext.SaveChanges();
-    }
-
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        BaseCleanup();
+        context.SaveChanges();
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Blog.Benchmarks;
 
+[MemoryDiagnoser]
+[RPlotExporter]
 [MinColumn]
 [MaxColumn]
 public abstract class BenchmarkBase
@@ -16,14 +18,13 @@ public abstract class BenchmarkBase
     protected CoreBlogContext _coreBlogContext;
     protected CoreBlogContext _coreBlogContextSingleton;
     protected CoreBlogContext _coreBlogContextPooled;
-   
+
     protected BlogContext _blogContext;
     protected BlogContext _blogContextSingleton;
 
     protected int SeedLimit = 1000;
 
-    protected PooledDbContextFactory<CoreBlogContext> _coreDbContextFactory;
-
+    protected PooledDbContextFactory<CoreBlogContext> _corePooledDbContextFactory;
 
     /// <summary>
     /// Create new db contexts for benchmarks
@@ -31,7 +32,7 @@ public abstract class BenchmarkBase
     protected void NewDbContexts()
     {
         _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextPooled = _corePooledDbContextFactory.CreateDbContext();
         
         _blogContext = new BlogContext();
     }
@@ -107,11 +108,11 @@ public abstract class BenchmarkBase
         _blogContext.Database.Create();
 
         // ef core
-        _coreDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
+        _corePooledDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
 
         _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextPooled = _coreDbContextFactory.CreateDbContext();
-        _coreBlogContextSingleton = _coreDbContextFactory.CreateDbContext();
+        _coreBlogContextPooled = _corePooledDbContextFactory.CreateDbContext();
+        _coreBlogContextSingleton = _corePooledDbContextFactory.CreateDbContext();
 
         _coreBlogContext.Database.EnsureDeleted();
         _coreBlogContext.Database.EnsureCreated();
@@ -208,7 +209,7 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void PostsAddBulkInsertEf6(int? overrideLimit = null)
     {
-        var limit = overrideLimit.HasValue ? overrideLimit.Value : SeedLimit;
+        var limit = overrideLimit ?? SeedLimit;
 
         List<Post> posts = new();
 

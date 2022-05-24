@@ -6,7 +6,7 @@ namespace Blog.Benchmarks;
 
 public class ProfilingService : BenchmarkBase
 {
-    public void TestSingleEntity()
+    public void SingleEntity()
     {
         // EF Core
         _coreBlogContext.Posts.Add(PostCore.NewPost());
