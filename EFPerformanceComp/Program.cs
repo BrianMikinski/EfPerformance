@@ -20,7 +20,6 @@ public class Benchmarks
     [GlobalSetup]
     public void Setup()
     {
-        //using var connection = new SqlConnection("Server=localhost;Database=test;User=SA;Password=Abcd5678;Connect Timeout=60;ConnectRetryCount=0;Trust Server Certificate=true");
         using var connection = new SqlConnection(ConnectionString);
         connection.Open();
 

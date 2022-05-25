@@ -9,7 +9,7 @@ public class RetrieveAndUpdateSinglePostBenchmark : BenchmarkBase
     public void GlobalSetup()
     {
         ConfigDatabases();
-        AddPostsToSeedLimit(10000, true);
+        AddPostsToSeedLimit(10000);
     }
 
     [Benchmark(Baseline = true)]

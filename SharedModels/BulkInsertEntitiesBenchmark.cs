@@ -8,7 +8,8 @@ public class BulkInsertEntitiesBenchmark : BenchmarkBase
     [GlobalSetup]
     public void GlobalSetup()
     {
-        SeedLimit = 10000;
+        ConfigDatabases();
+        AddPostsToSeedLimit();
     }
 
     [Benchmark(Baseline = true)]

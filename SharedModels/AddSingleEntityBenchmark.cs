@@ -24,15 +24,6 @@ public class AddSingleEntityBenchmark : BenchmarkBase
     }
 
     [Benchmark]
-    public void Ef6Singleton()
-    {
-        var post = Post.NewPost();
-
-        _blogContextSingleton.Posts.Add(post);
-        _blogContextSingleton.SaveChanges();
-    }
-
-    [Benchmark]
     public void EfCore()
     {
         using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
@@ -41,14 +32,6 @@ public class AddSingleEntityBenchmark : BenchmarkBase
 
         context.Posts.Add(post);
         context.SaveChanges();
-    }
-
-    [Benchmark]
-    public void EfCoreSingleton()
-    {
-        var post = PostCore.NewPost();
-        _coreBlogContextSingleton.Posts.Add(post);
-        _coreBlogContextSingleton.SaveChanges();
     }
 
     [Benchmark]

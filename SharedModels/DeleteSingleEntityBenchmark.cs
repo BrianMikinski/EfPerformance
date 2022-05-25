@@ -8,6 +8,7 @@ public class DeleteSingleEntityBenchmark :BenchmarkBase
     [GlobalSetup]
     public void GlobalSetup()
     {
+        ConfigDatabases();
         AddPostsToSeedLimit();
     }
 

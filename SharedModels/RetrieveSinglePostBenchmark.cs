@@ -21,23 +21,10 @@ public class RetrieveSinglePostBenchmark : BenchmarkBase
     }
 
     [Benchmark]
-    public void Ef6Singleton()
-    {
-        _ = _blogContextSingleton.Posts.FirstOrDefault();
-    }
-
-
-    [Benchmark]
     public void EfCore()
     {
         using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
         _ = context.Posts.FirstOrDefault();
-    }
-
-    [Benchmark]
-    public void EfCoreSingleton()
-    {
-        _coreBlogContextSingleton.Posts.FirstOrDefault();
     }
 
     [Benchmark]

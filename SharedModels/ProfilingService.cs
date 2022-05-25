@@ -8,31 +8,31 @@ public class ProfilingService : BenchmarkBase
 {
     public void SingleEntity()
     {
+        using var coreContext = _corePooledDbContextFactory.CreateDbContext();
+
         // EF Core
-        _coreBlogContext.Posts.Add(PostCore.NewPost());
-
-        _coreBlogContext.SaveChanges();
-
-        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        coreContext.Posts.Add(PostCore.NewPost());
+        coreContext.SaveChanges();
 
         Stopwatch coreStopWatch = new();
 
         coreStopWatch.Start();
 
-        _coreBlogContext.Posts.FirstOrDefault();
+        coreContext.Posts.FirstOrDefault();
 
         coreStopWatch.Stop();
 
         // EF6
-        _blogContext.Posts.Add(Post.NewPost());
-        _blogContext.SaveChanges();
 
-        _blogContext = new BlogContext();
+        using var context = new BlogContext();
+    
+        context.Posts.Add(Post.NewPost());
+        context.SaveChanges();
 
         Stopwatch stopWatch = new();
         stopWatch.Start();
 
-        _blogContext.Posts.FirstOrDefault();
+        context.Posts.FirstOrDefault();
 
         stopWatch.Stop();
     }

@@ -1,20 +1,20 @@
 using BenchmarkDotNet.Attributes;
 using Blog.Models;
 using CoreBlog.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Benchmarks;
 
 public class RetrieveAllPostsBenchmark : BenchmarkBase
 {
     [Params(1, 10, 1000)]
-    public int Rows;
+    public int Rows = 0;
 
     [GlobalSetup]
     public void GlobalSetup()
     {
         ConfigDatabases();
-        AddPostsToSeedLimit(Rows, true);
+        AddPostsToSeedLimit(Rows);
     }
 
     [Benchmark(Baseline = true)]
@@ -28,28 +28,10 @@ public class RetrieveAllPostsBenchmark : BenchmarkBase
     }
 
     [Benchmark]
-    public void Ef6Singleton()
-    {
-        _ = _blogContextSingleton
-                    .Posts
-                    .AsNoTracking()
-                    .ToList();
-    }
-
-    [Benchmark]
     public void EfCore()
     {
         using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
         _ = context
-                    .Posts
-                    .AsNoTracking()
-                    .ToList();
-    }
-
-    [Benchmark]
-    public void EfCoreSingleton()
-    {
-        _ = _coreBlogContextSingleton
                     .Posts
                     .AsNoTracking()
                     .ToList();

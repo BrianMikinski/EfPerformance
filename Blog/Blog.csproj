@@ -7,6 +7,6 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Z.EntityFramework.Extensions" Version="6.13.17" />
+    <PackageReference Include="Z.EntityFramework.Extensions" Version="6.13.20" />
   </ItemGroup>
 </Project>

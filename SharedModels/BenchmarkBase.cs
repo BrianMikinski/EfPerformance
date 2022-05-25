@@ -15,27 +15,9 @@ public abstract class BenchmarkBase
     protected const string EF_CORE_CATEGORY = "EF Core";
     protected const string EF_6_CATEGORY = "EF 6";
 
-    protected CoreBlogContext _coreBlogContext;
-    protected CoreBlogContext _coreBlogContextSingleton;
-    protected CoreBlogContext _coreBlogContextPooled;
-
-    protected BlogContext _blogContext;
-    protected BlogContext _blogContextSingleton;
-
     protected int SeedLimit = 1000;
 
     protected PooledDbContextFactory<CoreBlogContext> _corePooledDbContextFactory;
-
-    /// <summary>
-    /// Create new db contexts for benchmarks
-    /// </summary>
-    protected void NewDbContexts()
-    {
-        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextPooled = _corePooledDbContextFactory.CreateDbContext();
-        
-        _blogContext = new BlogContext();
-    }
 
     /// <summary>
     /// Full real word database seed
@@ -51,6 +33,8 @@ public abstract class BenchmarkBase
     /// </summary>
     private void FullDatabaseSeedEfCore()
     {
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
         var tags = new List<TagCore>()
         {
             TagCore.NewTag(),
@@ -59,9 +43,9 @@ public abstract class BenchmarkBase
             TagCore.NewTag()
         };
 
-        _coreBlogContext.Tags.AddRange(tags);
+        context.Tags.AddRange(tags);
 
-        _coreBlogContext.SaveChanges(true);
+        context.SaveChanges(true);
 
         var categories = new List<CategoryCore>()
         {
@@ -70,20 +54,20 @@ public abstract class BenchmarkBase
             CategoryCore.NewCategory()
         };
 
-        _coreBlogContext.Categories.AddRange(categories);
+        context.Categories.AddRange(categories);
 
-        _coreBlogContext.SaveChanges(true);
+        context.SaveChanges(true);
 
 
         for (int i = 0; i < SeedLimit; i++)
         {
             var (post, postTags) = PostCore.NewPostWithCategoriesAndTags(categories[0], tags);
 
-            _coreBlogContext.Posts.Add(post);
-            _coreBlogContext.SaveChanges(true);
+            context.Posts.Add(post);
+            context.SaveChanges(true);
 
-            _coreBlogContext.PostTags.AddRange(postTags);
-            _coreBlogContext.SaveChanges(true);
+            context.PostTags.AddRange(postTags);
+            context.SaveChanges(true);
         }
     }
 
@@ -101,8 +85,7 @@ public abstract class BenchmarkBase
     public void ConfigDatabases()
     {
         // ef 6
-        _blogContext = new();
-        _blogContextSingleton = new();
+        BlogContext _blogContext = new();
 
         _blogContext.Database.Delete();
         _blogContext.Database.Create();
@@ -110,9 +93,7 @@ public abstract class BenchmarkBase
         // ef core
         _corePooledDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
 
-        _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
-        _coreBlogContextPooled = _corePooledDbContextFactory.CreateDbContext();
-        _coreBlogContextSingleton = _corePooledDbContextFactory.CreateDbContext();
+        CoreBlogContext _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
 
         _coreBlogContext.Database.EnsureDeleted();
         _coreBlogContext.Database.EnsureCreated();
@@ -146,11 +127,13 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void PostsAddEfCore()
     {
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
         for (int i = 0; i < SeedLimit; i++)
         {
             var post = PostCore.NewPost();
-            _coreBlogContext.Posts.Add(post);
-            _coreBlogContext.SaveChanges();
+            context.Posts.Add(post);
+            context.SaveChanges();
         }
     }
 
@@ -159,6 +142,8 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void PostsAddBulkInsertEfCore(int? overrideLimit = null)
     {
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
         var limit = overrideLimit ?? SeedLimit;
 
         List<PostCore> posts = new();
@@ -168,7 +153,7 @@ public abstract class BenchmarkBase
             posts.Add(PostCore.NewPost());
         }
 
-        _coreBlogContext.BulkInsert(posts);
+        context.BulkInsert(posts);
     }
 
     /// <summary>
@@ -177,6 +162,8 @@ public abstract class BenchmarkBase
     /// <param name="overrideLimit"></param>
     protected void PostsAddRangeInsertEFCore(int? overrideLimit = null)
     {
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
         var limit = overrideLimit ?? SeedLimit;
 
         List<PostCore> posts = new();
@@ -186,8 +173,8 @@ public abstract class BenchmarkBase
             posts.Add(new PostCore());
         }
 
-        _coreBlogContext.Posts.AddRange(posts);
-        _coreBlogContext.SaveChanges();
+        context.Posts.AddRange(posts);
+        context.SaveChanges();
     }
 
     /// <summary>
@@ -195,12 +182,14 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void PostsAddEf6()
     {
+        using var context = new BlogContext();
+
         for (int i = 0; i < SeedLimit; i++)
         {
             var post = Post.NewPost();
 
-            _blogContext.Posts.Add(post);
-            _blogContext.SaveChanges();
+            context.Posts.Add(post);
+            context.SaveChanges();
         }
     }
 
@@ -209,6 +198,8 @@ public abstract class BenchmarkBase
     /// </summary>
     protected void PostsAddBulkInsertEf6(int? overrideLimit = null)
     {
+        using var context = new BlogContext();
+
         var limit = overrideLimit ?? SeedLimit;
 
         List<Post> posts = new();
@@ -218,7 +209,7 @@ public abstract class BenchmarkBase
             posts.Add(Post.NewPost());
         }
 
-        _blogContext.BulkInsert(posts);
+        context.BulkInsert(posts);
     }
 
     public void PostInsertNoChangeTracker()
@@ -228,20 +219,24 @@ public abstract class BenchmarkBase
 
     public (BlogDataDiagnostics coreBlog, BlogDataDiagnostics blog) TableDiagnostics()
     {
+        using var coreContext = _corePooledDbContextFactory.CreateDbContext();
+
         var coreBlogDiagnostics = new BlogDataDiagnostics()
         {
-            PostsCount = _coreBlogContext.Posts.Count(),
-            CategoriesCount = _coreBlogContext.Categories.Count(),
-            TagsCount = _coreBlogContext.Tags.Count(),
-            PostTagsCount = _coreBlogContext.PostTags.Count()
+            PostsCount = coreContext.Posts.Count(),
+            CategoriesCount = coreContext.Categories.Count(),
+            TagsCount = coreContext.Tags.Count(),
+            PostTagsCount = coreContext.PostTags.Count()
         };
+
+        using var context = new BlogContext();
 
         var blogDiagnostics = new BlogDataDiagnostics()
         {
-            PostsCount = _blogContext.Posts.Count(),
-            CategoriesCount = _blogContext.Categories.Count(),
-            TagsCount = _blogContext.Tags.Count(),
-            PostTagsCount = _blogContext.PostTags.Count()
+            PostsCount = context.Posts.Count(),
+            CategoriesCount = context.Categories.Count(),
+            TagsCount = context.Tags.Count(),
+            PostTagsCount = context.PostTags.Count()
         };
 
         return (coreBlogDiagnostics, blogDiagnostics);
@@ -256,37 +251,41 @@ public abstract class BenchmarkBase
         Ef6Cleanup();
     }
 
-    protected void EfCoreCleanup()
+    private void EfCoreCleanup()
     {
-        _coreBlogContext
+        using var context = _corePooledDbContextFactory.CreateDbContext();
+
+        context
             .Database
             .ExecuteSqlRaw("delete from PostTags where 1=1");
 
-        _coreBlogContext
+        context
             .Database
             .ExecuteSqlRaw("delete from Posts where 1=1");
 
-        _coreBlogContext
+        context
             .Database
             .ExecuteSqlRaw("delete from Categories where 1=1");
 
-        _coreBlogContext
+        context
             .Database
             .ExecuteSqlRaw("delete from Tags where 1=1");
     }
 
-    protected void Ef6Cleanup()
+    private void Ef6Cleanup()
     {
-        _blogContext
+        using var context = new BlogContext();
+
+        context
             .Database.ExecuteSqlCommand("delete from PostTags where 1=1");
 
-        _blogContext
+        context
             .Database.ExecuteSqlCommand("delete from Posts where 1=1");
 
-        _blogContext
+        context
             .Database.ExecuteSqlCommand("delete from Categories where 1=1");
 
-        _blogContext
+        context
             .Database.ExecuteSqlCommand("delete from Tags where 1=1");
     }
 }
