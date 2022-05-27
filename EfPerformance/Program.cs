@@ -10,7 +10,6 @@ DebugBenchmarks();
 
 DbDiagnostics();
 
-
 /// <summary>
 /// Programatic configuration of the jobs.
 /// This can be overwridden by passing in arguments

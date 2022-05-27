@@ -2,7 +2,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace Blog.Benchmarks;
 
-[MemoryDiagnoser]
 public class DemoBenchmark : BenchmarkBase
 {
     [GlobalSetup]
