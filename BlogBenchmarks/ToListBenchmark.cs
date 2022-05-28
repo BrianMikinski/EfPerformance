@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Benchmarks;
 
-public class RetrieveAllPostsBenchmark : BenchmarkBase
+public class ToListBenchmark : BenchmarkBase
 {
     [Params(1, 10, 1000)]
     public int Rows = 0;

@@ -4,7 +4,7 @@ using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
-public class RetrieveSinglePostBenchmark : BenchmarkBase
+public class FirstOrDefaultBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()

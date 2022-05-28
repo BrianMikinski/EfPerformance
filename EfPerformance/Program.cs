@@ -3,7 +3,6 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using Blog.Benchmarks;
 
-//Console.WriteLine("Hello, World! Welcome to EF Core vs Ef6 Performance profiling!");
 BenchmarkSwitcher.FromAssembly(typeof(BenchmarkBase).Assembly).Run(args, GetGlobalConfig());
 
 DebugBenchmarks();
@@ -26,7 +25,7 @@ static void DebugBenchmarks(bool isEnabled = false)
 {
     if (isEnabled)
     {
-        var allPostsBenchmark = new RetrieveAllPostsBenchmark();
+        var allPostsBenchmark = new ToListBenchmark();
 
         allPostsBenchmark.GlobalSetup();
 

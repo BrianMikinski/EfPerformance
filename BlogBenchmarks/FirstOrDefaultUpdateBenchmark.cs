@@ -3,7 +3,7 @@ using Blog.Models;
 
 namespace Blog.Benchmarks;
 
-public class RetrieveAndUpdateSinglePostBenchmark : BenchmarkBase
+public class FirstOrDefaultUpdateBenchmark : BenchmarkBase
 {
     [GlobalSetup]
     public void GlobalSetup()

@@ -100,7 +100,7 @@ public abstract class BenchmarkBase
     }
 
     /// <summary>
-    /// 
+    /// Seed ef 6 and ef core databases
     /// </summary>
     public void AddPostsToSeedLimit(int? overridenLimit = null, bool isBulkInsert = false)
     {
