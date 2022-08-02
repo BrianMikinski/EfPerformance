@@ -30,6 +30,7 @@ namespace CoreBlog.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;");
             //optionsBuilder.LogTo(Console.WriteLine);
         }
 
@@ -38,7 +39,7 @@ namespace CoreBlog.Models
             OnModelCreatingPartial(modelBuilder);
 
             modelBuilder.Entity<PostTagCore>()
-                .HasKey(t => new { t.PostId, t.TagId });
+                .HasIndex(t => new { t.PostId, t.TagId });
 
             modelBuilder.Entity<PostTagCore>()
             .HasOne(pt => pt.Post)

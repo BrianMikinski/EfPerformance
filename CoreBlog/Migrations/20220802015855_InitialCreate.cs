@@ -56,13 +56,13 @@ namespace CoreBlog.Migrations
                 name: "PostTags",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostTags", x => new { x.PostId, x.TagId });
+                    table.PrimaryKey("PK_PostTags", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PostTags_Posts_PostId",
                         column: x => x.PostId,
@@ -81,6 +81,11 @@ namespace CoreBlog.Migrations
                 name: "IX_Posts_CategoryId",
                 table: "Posts",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostTags_PostId_TagId",
+                table: "PostTags",
+                columns: new[] { "PostId", "TagId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostTags_TagId",

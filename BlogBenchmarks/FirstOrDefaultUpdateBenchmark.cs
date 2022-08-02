@@ -9,7 +9,7 @@ public class FirstOrDefaultUpdateBenchmark : BenchmarkBase
     public void GlobalSetup()
     {
         ConfigDatabases();
-        AddPostsToSeedLimit(10000);
+        AddPostsToSeedLimit();
     }
 
     [Benchmark(Baseline = true)]
