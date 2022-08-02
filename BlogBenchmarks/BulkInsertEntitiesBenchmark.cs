@@ -9,7 +9,6 @@ public class BulkInsertEntitiesBenchmark : BenchmarkBase
     public void GlobalSetup()
     {
         ConfigDatabases();
-        AddPostsToSeedLimit();
     }
 
     [Benchmark(Baseline = true)]

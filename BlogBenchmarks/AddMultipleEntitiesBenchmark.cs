@@ -10,7 +10,6 @@ public class AddMultipleEntitiesBenchmark : BenchmarkBase
     public void GlobalSetup()
     {
         ConfigDatabases();
-        AddPostsToSeedLimit();
     }
 
     [Benchmark(Baseline = true)]
