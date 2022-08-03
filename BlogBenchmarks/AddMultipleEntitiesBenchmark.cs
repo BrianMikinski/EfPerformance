@@ -17,8 +17,6 @@ public class AddMultipleEntitiesBenchmark : BenchmarkBase
     {
         using var context = new BlogContext();
 
-        List<Post> posts = new();
-
         for (int i = 0; i < SeedLimit; i++)
         {
             context.Posts.Add(new Post());
@@ -28,11 +26,22 @@ public class AddMultipleEntitiesBenchmark : BenchmarkBase
     }
 
     [Benchmark]
+    public void EfCore()
+    {
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+
+        for (int i = 0; i < SeedLimit; i++)
+        {
+            context.Posts.Add(new PostCore());
+        }
+
+        context.SaveChanges();
+    }
+
+    [Benchmark]
     public void EfCorePooled()
     {
         using var context = _corePooledDbContextFactory.CreateDbContext();
-
-        List<PostCore> posts = new();
 
         for (int i = 0; i < SeedLimit; i++)
         {

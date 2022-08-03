@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Blog.Models;
+using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
@@ -20,6 +21,20 @@ public class DeleteSingleEntityBenchmark :BenchmarkBase
         var post = context.Posts.FirstOrDefault();
 
         if(post != null)
+        {
+            context.Posts.Remove(post);
+            context.SaveChanges();
+        }
+    }
+
+    [Benchmark]
+    public void EfCore()
+    {
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+
+        var post = context.Posts.FirstOrDefault();
+
+        if (post != null)
         {
             context.Posts.Remove(post);
             context.SaveChanges();

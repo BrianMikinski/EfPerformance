@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using Blog.Models;
+using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
@@ -19,6 +20,18 @@ public class FirstOrDefaultUpdateBenchmark : BenchmarkBase
         
         var post = context.Posts.FirstOrDefault();
         post?.UpdateTitle("Is this faster than EF Core");
+
+        context.SaveChanges();
+    }
+
+
+    [Benchmark]
+    public void EfCore()
+    {
+        using var context = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+
+        var post = context.Posts.FirstOrDefault();
+        post?.UpdateTitle("EF Core will Rock your socks off!");
 
         context.SaveChanges();
     }
