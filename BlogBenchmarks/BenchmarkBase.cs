@@ -85,15 +85,15 @@ public abstract class BenchmarkBase
     public void ConfigDatabases()
     {
         // ef 6
-        BlogContext _blogContext = new();
+        using BlogContext blockContext = new();
 
-        _blogContext.Database.Delete();
-        _blogContext.Database.Create();
+        blockContext.Database.Delete();
+        blockContext.Database.Create();
 
         // ef core
         _corePooledDbContextFactory = new PooledDbContextFactory<CoreBlogContext>(CoreBlogContext.NewDbContextOptions());
 
-        CoreBlogContext _coreBlogContext = new CoreBlogContext(CoreBlogContext.NewDbContextOptions());
+        using CoreBlogContext _coreBlogContext = new(CoreBlogContext.NewDbContextOptions());
 
         _coreBlogContext.Database.EnsureDeleted();
         _coreBlogContext.Database.EnsureCreated();
@@ -116,7 +116,7 @@ public abstract class BenchmarkBase
         }
         else
         {
-            PostsAddBulkInsertEfCore(); ;
+            PostsAddBulkInsertEfCore();
             PostsAddBulkInsertEf6();
         }
 

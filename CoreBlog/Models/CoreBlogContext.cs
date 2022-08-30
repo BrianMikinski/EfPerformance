@@ -19,6 +19,9 @@ namespace CoreBlog.Models
         {
             return new DbContextOptionsBuilder<CoreBlogContext>()
             .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CoreBlog;Trusted_Connection=True;")
+            //.EnableSensitiveDataLogging(true)
+            //.LogTo(Console.WriteLine)
+            //.EnableDetailedErrors(true)
             .Options;
         }
 
