@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Benchmarks;
 
+[Config(typeof(StyleConfig))]
 public class ToListBenchmark : BenchmarkBase
 {
     [Params(1, 10, 1000)]
