@@ -9,7 +9,7 @@ Entity Framework Performance Testing
 dotnet new angular --name DotNet6AngularTemplate
 
 ## create a new solution file
-dotnet new sln
+dotnet new sln 
 
 ## add project to new solution file
 dotnet sln add [path to project]
