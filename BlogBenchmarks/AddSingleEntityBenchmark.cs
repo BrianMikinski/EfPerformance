@@ -4,6 +4,7 @@ using CoreBlog.Models;
 
 namespace Blog.Benchmarks;
 
+[Config(typeof(StyleConfig))]
 public class AddSingleEntityBenchmark : BenchmarkBase
 {
     [GlobalSetup]
