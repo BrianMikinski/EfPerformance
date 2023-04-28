@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.3" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Z.EntityFramework.Extensions" Version="7.18.1" />
+    <PackageReference Include="Z.EntityFramework.Extensions" Version="7.21.0" />
   </ItemGroup>
 </Project>
